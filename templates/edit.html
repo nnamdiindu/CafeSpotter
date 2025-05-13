@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% from "bootstrap/form.html" import render_form %}
+{% block title %}Edit Cafe{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Edit Cafe</h1>
+
+    {{ render_form(form, novalidate=True) }}
+</div>
+
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+    {% block content %}
+
+    <!-- Navbar Section -->
+    <div class="container text-light">
+      <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+          <img width="64" height="64" src="https://img.icons8.com/external-flaticons-flat-flat-icons/64/external-hot-coffee-winter-season-flaticons-flat-flat-icons.png" alt="external-hot-coffee-winter-season-flaticons-flat-flat-icons"/>
+        </a>
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="/" class="nav-link px-2 link-warning">Home</a></li>
+          <li><a href="/about" class="nav-link px-2 link-warning">About</a></li>
+        </ul>
+
+        {% if not current_user.is_authenticated %}
+
+        <div class="col-md-3 text-end">
+            <a href="{{ url_for('login') }}">
+                <button type="button" class="btn btn-outline-warning me-2">Login</button>
+            </a>
+            <a href="{{ url_for('register') }}">
+                <button type="button" class="btn btn-warning">Sign-up</button>
+            </a>
+          {% else %}
+          <a href="{{ url_for('logout') }}">
+            <button type="button" class="btn btn-warning">Logout</button>
+          </a>
+        </div>
+        {% endif %}
+      </header>
+    </div>
+
+    <!-- Body Section -->
+    <div class="album py-5">
+      <div class="container">
+        <!-- Modified grid classes to be more explicit -->
+        <div class="row g-3">
+            {% for cafe in cafes %}
+                <!-- Explicitly defined column classes for all breakpoints -->
+                <div class="col-12 col-sm-6 col-md-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                    <h2 class="text-center card-text-header fs-4 p-2">{{ cafe.name }}</h2>
+                    <img src="{{ cafe.img_url }}" class="img-fluid" alt="{{ cafe.name }}"/>
+
+                    <div class="card-body">
+                         
+                        <h3 class="card-text fs-5">Location: <a class="location-link" href="{{cafe.map_url }}" target="_blank">{{ cafe.location }}</a></h3>
+                        <h3 class="card-text fs-5">Number of seats: {{ cafe.seats }}</h3>
+                        {% if cafe.has_toilet == 1 %}
+                        <h3 class="card-text fs-5">Toilet: Yes</h3>
+                        {% else %}
+                        <h3 class="card-text fs-5">Toilet: No</h3>
+                        {% endif %} 
+                        
+                        {% if cafe.has_wifi == 1 %}
+                        <h3 class="card-text fs-5">Wifi: 📶</h3>
+                        {% else %}
+                        <h3 class="card-text fs-5">Wifi: ❌</h3>
+                        {% endif %} 
+                        
+                        {% if cafe.has_sockets == 1 %}
+                        <h3 class="card-text fs-5">Sockets: 🔌</h3>
+                        {% else %}
+                        <h3 class="card-text fs-5">Sockets: ❌</h3>
+                        {% endif %} 
+                        
+                        {% if cafe.can_take_calls == 1 %}
+                        <h3 class="card-text fs-5">Calls 📞: Yes</h3>
+                        {% else %}
+                        <h3 class="card-text fs-5">Calls 📞: No</h3>
+                        {% endif %}
+
+                        <h3 class="card-text fs-5">
+                        Average Coffee Price: {{ cafe.coffee_price }}
+                        </h3>
+                        
+                        {% if current_user.is_authenticated %}
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <a href="{{ url_for('edit', cafe_id=cafe.id) }}">
+                                <button type="button" class="btn btn-sm btn-outline-success">Edit</button>
+                            </a>
+                            {% if current_user.id == 1 %}
+                            <a href="{{ url_for('delete', cafe_id=cafe.id) }}" >
+                                <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+                            </a>
+                            {% endif %}
+                            
+                        </div>
+                        {% endif %}
+                    </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+      </div>
+    </div>
+{% endblock %}

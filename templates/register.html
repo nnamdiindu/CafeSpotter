@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% from "bootstrap/form.html" import render_form %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center text-light" style="min-height: 100vh;">
+    
+    <div class="w-25 m-auto">
+      <img width="64" height="64" src="https://img.icons8.com/external-flaticons-flat-flat-icons/64/external-hot-coffee-winter-season-flaticons-flat-flat-icons.png" alt="external-hot-coffee-winter-season-flaticons-flat-flat-icons"/>
+
+      <h1 class="h3 mb-3 fw-normal">Register</h1>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="text-danger">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        {{ render_form(form, novalidate=True) }}
+    </div>
+  </div>
+
+{% endblock %}
