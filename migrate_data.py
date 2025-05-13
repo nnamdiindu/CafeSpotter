@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 import psycopg2
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -6,6 +7,7 @@ from flask import Flask
 from main import db  # Replace with your actual app module name
 from main import Cafe  # Replace with your actual model import
 
+load_dotenv()
 # Create a minimal Flask app context (needed for SQLAlchemy models)
 app = Flask(__name__)
 app.config.from_mapping(
@@ -18,7 +20,7 @@ db.init_app(app)
 def migrate_data():
     with app.app_context():
         # PostgreSQL connection string from Render
-        postgres_uri = "postgresql://cafestopper_user:DYLxPogEBBhYvF9iqCsR4zfZu5Ahpgrc@dpg-d0hohiqli9vc73ea94f0-a.oregon-postgres.render.com/cafestopper"  # Replace with your actual connection string
+        postgres_uri = os.environ.get("POSTGRES_DB_URI")  # Replace with your actual connection string
 
         # Create engine for PostgreSQL
         postgres_engine = create_engine(postgres_uri)
